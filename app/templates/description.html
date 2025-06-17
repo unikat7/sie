@@ -1,0 +1,189 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+<style>
+  body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #ffffff;
+    color: #1a1a1a;
+    margin: 0;
+    padding: 0;
+  }
+
+  .course-container {
+    max-width: 960px;
+    margin: 2rem auto;
+    padding: 1rem 1.5rem;
+    background-color: #ffffff;
+    color: #333;
+  }
+
+  .course-header {
+    border-bottom: 2px solid #16a34a; /* green */
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .course-title {
+    color: #16a34a;
+    font-size: 2.25rem; /* ~3xl */
+    margin: 0;
+  }
+
+  .course-duration {
+    color: #4b5563; /* gray */
+    margin-top: 0.25rem;
+  }
+
+  .institute-name {
+    font-weight: 600;
+    color: #15803d;
+    margin-bottom: 2rem;
+    font-size: 1.125rem;
+  }
+
+  /* Main grid container */
+  .course-grid {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: nowrap;       /* no wrapping */
+    align-items: stretch;    /* stretch children vertically */
+    min-height: 400px;       /* set min height so flex children can stretch */
+  }
+
+  .course-info {
+    flex: 2 1 60%;
+  }
+
+  .course-image {
+    width: 100%;
+    height: auto;
+    border: 1px solid #bbf7d0; /* light green */
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgb(22 163 74 / 0.3);
+    object-fit: cover;
+    margin-bottom: 1.5rem;
+  }
+
+  .course-about h2,
+  .course-learn h2 {
+    color: #16a34a;
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .course-about p,
+  .course-learn ul {
+    color: #4b5563;
+    line-height: 1.6;
+    margin: 0 0 1.5rem 0;
+  }
+
+  .course-learn ul {
+    list-style-type: disc;
+    padding-left: 1.2rem;
+  }
+
+  /* Sidebar */
+  .course-sidebar {
+    flex: 1 1 30%;
+    background-color: #dcfce7; /* green-50 */
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgb(22 163 74 / 0.2);
+    border: 1px solid #bbf7d0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* align from top */
+    align-items: center;
+    gap: 1rem;
+
+    height: 100%; /* fill full height of parent flex container */
+  }
+
+  .course-price p {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #16a34a;
+    margin: 0 0 0.25rem 0;
+  }
+
+  .course-price small {
+    color: #6b7280; /* gray-500 */
+  }
+  .paybtn{
+    padding:10px;
+    background-color: green;
+    color:white;
+    border-radius:10px;
+    border: none;
+
+  }
+
+
+  .note {
+    font-size: 0.75rem;
+    color: #0e53cb; /* gray-400 */
+    margin-top: 0.75rem;
+    text-align: center;
+  }
+</style>
+{% endblock extra_head %}
+
+{% block content %}
+<section class="course-container">
+
+  <!-- Title and Duration -->
+  {% for c in course %}
+  <div class="course-header">
+    <h1 class="course-title">{{ c.name }}</h1>
+    <p class="course-duration">Duration: {{ c.duration }}</p>
+  </div>
+  {% endfor %}
+
+  <!-- Institute Name -->
+  <div class="institute-name">
+    Offered by: <strong>Saraswatinagar Institute</strong>
+  </div>
+
+  <!-- Two Column Layout -->
+  <div class="course-grid">
+
+    <!-- Left Section -->
+    <div class="course-info">
+      {% for c in course %}
+      <img src="{{ c.cimage.url }}" alt="Course Image" class="course-image">
+      {% endfor %}
+      
+      {% for a in aboutcourse %}
+      <div class="course-about">
+        <h2>About the Course</h2>
+        <p>{{ a.about | safe }}</p>
+      </div>
+
+      <div class="course-learn">
+        <h2>What You'll Learn</h2>
+        {{ a.learn | safe }}
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Right Section (Sidebar) -->
+    <div class="course-sidebar">
+      <div class="course-price">
+        {% for c in course %}
+        <p>NPR {{ c.fee }}</p>
+        {% endfor %}
+        <small>All materials included</small>
+      </div>
+      <form action="https://rc-epay.esewa.com.np/api/epay/main/v2/form" method="POST">
+          {{ form|safe }}
+          <button type="submit" class="paybtn">Pay Now</button>
+      </form>
+      <p class="note">* Limited seats available. Enroll now!</p>
+    </div>
+
+  </div>
+</section>
+{% endblock %}

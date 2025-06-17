@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+
+<body>
+    {% block content %}
+        <section class="background">
+    <h2>Our Background</h2>
+    <p>Saraswatinagar Institute was founded with a vision to offer accessible and affordable education to students in Kathmandu and beyond. Our journey started with a single goal: to empower learners with practical skills and strong foundations.</p>
+     <section class="mission-vision">
+    <h2>Our Mission & Vision</h2>
+    <p><strong>Mission:</strong> To educate and inspire learners through quality teaching, hands-on experience, and a supportive learning environment.</p>
+    <p><strong>Vision:</strong> To become a leading educational institution recognized for excellence, innovation, and community impact.</p>
+  </section>
+
+  <section class="team">
+    <h2>Our Team</h2>
+    <div class="team-container">
+        {% for t in team %}
+          
+      
+      <div class="team-member">
+        <img src="{{t.profile.url}}" alt="Team Member 1">
+        <h4>{{t.name}}</h4>
+        <p>{{t.position}}</p>
+      </div>
+       {% endfor %}
+    </div>
+  </section>
+
+  <section class="proud-section">
+    <h2>What Makes Us Proud</h2>
+    <ul>
+      <li>1000+ Students Trained Successfully</li>
+      <li>Certified and Experienced Instructors</li>
+      <li>Job-Oriented Courses & Internships</li>
+      <li>Strong Community Engagement</li>
+      <li>Modern Computer Labs & Learning Facilities</li>
+    </ul>
+  </section>
+  </section>
+    {% endblock content %}
+
+    {% block extra_head %}
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #fff;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    section {
+      padding: 60px 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+    h2 {
+      text-align: center;
+      color: #2E7D32;
+      margin-bottom: 30px;
+    }
+    .mission-vision p,
+    .background p {
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto 20px auto;
+    }
+    .team-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+    }
+    .team-member {
+      background-color: #e8f5e9;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      width: 250px;
+    }
+    .team-member img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-bottom: 10px;
+    }
+    .proud-section ul {
+      max-width: 800px;
+      margin: auto;
+      padding-left: 20px;
+    }
+    .proud-section li {
+      margin-bottom: 10px;
+      color: #2E7D32;
+    }
+    </style>
+ 
+{% endblock extra_head %}
+
+ 
+

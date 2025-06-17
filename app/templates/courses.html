@@ -1,0 +1,20 @@
+ {% extends "base.html" %}
+ {% load static %}
+ {% block content %}
+    <section class="courses">
+    <h2 style="text-align:center;">Our Courses</h2>
+    <div class="courses-grid">
+        {% for c in course %}
+      <div class="course-card">
+        <div style="width: 200px;"><a href="{% url 'description' c.id %}"><img src="{{c.cimage.url}}" style="object-fit: cover;" alt="Course 1"></a></div>
+        <div style="margin-top: auto;">
+           <h3>{{c.name}}</h3>
+        <p>Duration:{{c.duration}}</p>
+        <p>Fee: Rs. {{c.fee}}</p>
+           <a href="{% url 'description/' c.id %}"><button>View</button></a>
+        </div>
+      </div>
+        {% endfor %}
+    </div>
+  </section>
+ {% endblock content %}

@@ -188,36 +188,75 @@ def profile_update(request):
 
 
 
-def pay(request, id):
+# def pay(request, id):
 
-    course = get_object_or_404(Course, id=id)
+#     course = get_object_or_404(Course, id=id)
     
  
-    uid = str(uuid.uuid4())
+#     uid = str(uuid.uuid4())
 
+
+#     payment = EsewaPayment(
+#         product_code="EPAYTEST", 
+#         amount=course.fee, 
+#         tax_amount=0,
+#         total_amount=course.fee,
+#         product_delivery_charge=0,
+#         product_service_charge=0,
+#         transaction_uuid=uid,
+#         success_url=f'http://localhost:8000/success/{uid}/',
+#         failure_url=f'http://localhost:8000/failure/{uid}/',
+#         secret_key=settings.secret_key 
+#     )
+
+   
+#     signature = payment.create_signature()
+
+  
+#     form = payment.generate_form()
+
+ 
+#     return render(request, "description.html", {
+#         'form': form
+#     })
+def pay(request, id):
+    course = get_object_or_404(Course, id=id)
+    print("Course:", course.name, "| Fee:", course.fee)  # 👈 prints to terminal
+
+    uid = str(uuid.uuid4())
+    print("Generated UUID:", uid)  # 👈 prints the UUID
+
+    transaction = Transaction.objects.create(
+        course=course,
+        transaction_uuid=uid,
+        transaction_amount=course.fee,
+        transaction_status='pending'
+    )
+    print("Transaction created:", transaction)
 
     payment = EsewaPayment(
-        product_code="EPAYTEST", 
-        amount=course.fee, 
+        product_code="EPAYTEST",
+        amount=course.fee,
         tax_amount=0,
         total_amount=course.fee,
         product_delivery_charge=0,
         product_service_charge=0,
         transaction_uuid=uid,
-        success_url=f'http://localhost:8000/success/{uid}/',
-        failure_url=f'http://localhost:8000/failure/{uid}/',
-        secret_key=settings.secret_key 
+        success_url=f'http://localhost:8000/success/{transaction.id}/',
+        failure_url=f'http://localhost:8000/failure/{transaction.id}/',
+        secret_key=settings.esewa_secret_key,
     )
 
-   
     signature = payment.create_signature()
+    print("Signature:", signature)
 
-  
     form = payment.generate_form()
+    print("Form HTML:", form)
 
- 
     return render(request, "description.html", {
-        'form': form
+        'form': form,
+        'transaction': transaction,
+        'course': course
     })
 
 

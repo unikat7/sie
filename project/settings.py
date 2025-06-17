@@ -162,4 +162,5 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = config('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
 
 
 
-secret_key=config('secret_key')
+
+ESEWA_SECRET_KEY=config('ESEWA_SECRET_KEY')
